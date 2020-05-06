@@ -1,5 +1,7 @@
 package hu.bme.mit.spaceship;
 
+import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
 import java.util.Random;
 
 /**
@@ -14,10 +16,15 @@ public class TorpedoStore {
 
   private int torpedoCount = 0;
 
-  private Random generator = new Random();
+  private Random generator;
 
   public TorpedoStore(int numberOfTorpedos){
     this.torpedoCount = numberOfTorpedos;
+    try {
+      generator = SecureRandom.getInstanceStrong();
+    } catch (NoSuchAlgorithmException e) {
+      e.printStackTrace();
+    }
 
     // update failure rate if it was specified in an environment variable
     String failureEnv = System.getenv("IVT_RATE");
